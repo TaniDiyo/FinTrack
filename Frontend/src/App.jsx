@@ -1,7 +1,7 @@
-import React from 'react'
-import {Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
 import Dashboard from "./pages/Dashboard";
+import React, { useState } from "react";
+import { useNavigate, Route, Routes } from "react-router-dom";
 
 const App = () => {
   const[user, setUser]= useState(null);
@@ -36,4 +36,4 @@ const App = () => {
   );
 };
 
-export default App
+export default App;
