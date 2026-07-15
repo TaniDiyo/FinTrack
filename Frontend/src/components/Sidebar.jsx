@@ -28,7 +28,7 @@ const Sidebar = ({ user, isCollapsed, setIsCollapsed }) => {
     const [mobileOpen, setMobileOpen] = useState(false);
     const [activeHover, setActiveHover] = useState(null);
 
-    const { name: username = "User", email = "user@example.com" } = user || {};
+    const { name: username = "User", email = "email" } = user || {};
     const initial = username.charAt(0).toUpperCase();
 
     useEffect(() => {

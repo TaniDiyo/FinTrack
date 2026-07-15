@@ -484,6 +484,11 @@ export const signupStyles = {
   // Button (reusing from login)
   button: "w-full bg-gradient-to-r from-teal-500 to-emerald-600 text-white py-3 rounded-xl font-medium shadow-md hover:shadow-lg transition-all flex items-center justify-center",
   buttonDisabled: "opacity-80 cursor-not-allowed",
+
+  //signup link
+  signUpContainer: "mt-8 text-center",
+  signUpText: "text-gray-600",
+  signUpLink: "font-medium text-teal-600 hover:underline",
   
   // Sign in link (reusing from login with modifications)
   signInContainer: "mt-8 text-center",

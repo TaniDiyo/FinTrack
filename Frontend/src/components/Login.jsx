@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate , Link } from "react-router-dom";
 import {
     User,
     Mail,
@@ -10,7 +10,7 @@ import {
 import { loginStyles } from "../assets/dummyStyles";
 import axios from "axios";
 
-const Login = ({ onLogin, API_URL = "http://localhost:5000/api" }) => {
+const Login = ({ onLogin, API_URL = "http://localhost:5000" }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
@@ -23,7 +23,7 @@ const Login = ({ onLogin, API_URL = "http://localhost:5000/api" }) => {
     const fetchProfile = async (token) => {
         if (!token) return null;
 
-        const res = await axios.get(`${API_URL}/user/me`, {
+        const res = await axios.get(`${API_URL}/api/user/me`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -182,7 +182,7 @@ const Login = ({ onLogin, API_URL = "http://localhost:5000/api" }) => {
                                         setEmail(e.target.value)
                                     }
                                     className={loginStyles.input}
-                                    placeholder="your@example.com"
+                                    placeholder="Enter email address"
                                     required
                                 />
                             </div>
@@ -211,7 +211,7 @@ const Login = ({ onLogin, API_URL = "http://localhost:5000/api" }) => {
                                         setPassword(e.target.value)
                                     }
                                     className={loginStyles.passwordInput}
-                                    placeholder="••••••"
+                                    placeholder="••••••••"
                                     required
                                 />
                                 <button
@@ -249,12 +249,30 @@ const Login = ({ onLogin, API_URL = "http://localhost:5000/api" }) => {
                                 }`}
                         >
                             {isLoading ? (
-                                "Signing In..."
+                                <>
+                                    <svg className={loginStyles.spinner} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                                    </svg>
+                                    Signing in...
+                                </>
                             ) : (
-                                "Sign In"
+                                "Sign in"
                             )}
                         </button>
                     </form>
+
+                    <div className={loginStyles.signUpContainer}>
+                        <p className={loginStyles.signUpText}>
+                            Don't have an account{" "}
+                            <Link
+                                to="/signup"
+                                className={loginStyles.signUpLink}
+                            >
+                                Create one
+                            </Link>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
