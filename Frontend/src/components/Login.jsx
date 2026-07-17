@@ -55,7 +55,7 @@ const Login = ({ onLogin, API_URL = "http://localhost:5000" }) => {
 
         try {
             const res = await axios.post(
-                `${API_URL}/user/login`,
+                `${API_URL}/api/user/login`,
                 { email, password },
                 {
                     headers: {
@@ -236,7 +236,6 @@ const Login = ({ onLogin, API_URL = "http://localhost:5000" }) => {
                                     setRememberMe(e.target.checked)
                                 }
                                 className={loginStyles.checkbox}
-                                required
                             />
                             <label htmlFor="remember" className={loginStyles.checkboxLabel}>
                                 Remember Me

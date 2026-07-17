@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { User, Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { User, Mail, Lock, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import axios from "axios";
 import { signupStyles } from "../assets/dummyStyles";
 
 const Signup = ({
     API_URL = "http://localhost:5000",
-    onSignUp,
+    onSignup,
 }) => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -103,7 +103,7 @@ const Signup = ({
             }
 
             if (!profile) profile = { name, email };
-            persistAuth(profile, token);
+            persistAuth(profile, token, rememberMe);
             if (typeof onSignup === "function") {
                 try {
                     onSignup(profile, rememberMe, token);
@@ -125,12 +125,178 @@ const Signup = ({
             } else {
                 setErrors({ api: err.message || "An unexpected error occurred" });
             }
+        } finally {
+            setIsLoading(false);
         }
-    }
+    };
 
     return (
-        <div>
-            Signup Page
+        <div className={signupStyles.pageContainer}>
+            <div className={signupStyles.cardContainer}>
+                <div className={signupStyles.header}>
+                    <button onClick={() => navigate(-1)} className={signupStyles.backButton}>
+                        <ArrowLeft className="w-5 h-5" />
+                    </button>
+
+                    <div className={signupStyles.avatar}>
+                        <User className="w-10 h-10 text-white" />
+                    </div>
+                    <h1 className={signupStyles.headerTitle}>Create Account</h1>
+                    <p className={signupStyles.headerSubtitle}>
+                        Join ExpenseTracker to manage your finances
+                    </p>
+                </div>
+
+                <div className={signupStyles.formContainer}>
+                    {errors.api && <p className={signupStyles.apiError}>{errors.api}</p>}
+
+                    <form onSubmit={handleSubmit} noValidate>
+                        <div className="mb-6">
+                            <label htmlFor="name" className={signupStyles.label}>
+                                Full Name
+                            </label>
+
+                            <div className={signupStyles.inputContainer}>
+                                <div className={signupStyles.inputIcon}>
+                                    <User className="w-5 h-5" />
+                                </div>
+
+                                <input
+                                    type="text"
+                                    id="name"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    className={`${signupStyles.input} ${errors.name
+                                        ? "border-red-300"
+                                        : "border-gray-200"
+                                        }`}
+                                    placeholder="Enter your name"
+                                />
+                            </div>
+
+                            {errors.name && (
+                                <p className={signupStyles.fieldError}>
+                                    {errors.name}
+                                </p>
+                            )}
+                        </div>
+
+                        <div className="mb-6">
+                            <label htmlFor="email" className={signupStyles.label}>
+                                Email Address
+                            </label>
+
+                            <div className={signupStyles.inputContainer}>
+                                <div className={signupStyles.inputIcon}>
+                                    <Mail className="w-5 h-5" />
+                                </div>
+
+                                <input
+                                    type="email"
+                                    id="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className={`${signupStyles.input} ${errors.email
+                                        ? "border-red-300"
+                                        : "border-gray-200"
+                                        }`}
+                                    placeholder="Enter email address"
+                                />
+                            </div>
+
+                            {errors.email && (
+                                <p className={signupStyles.fieldError}>
+                                    {errors.email}
+                                </p>
+                            )}
+                        </div>
+
+                        <div className="mb-6">
+                            <label htmlFor="password" className={signupStyles.label}>
+                                Password
+                            </label>
+
+                            <div className={signupStyles.inputContainer}>
+                                <div className={signupStyles.inputIcon}>
+                                    <Lock className="w-5 h-5" />
+                                </div>
+
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    id="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    className={`${signupStyles.passwordInput} ${errors.password
+                                        ? "border-red-300"
+                                        : "border-gray-200"
+                                        }`}
+                                    placeholder="••••••••"
+                                />
+
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className={signupStyles.passwordToggle}
+                                >
+                                    {showPassword ? (
+                                        <EyeOff className="w-5 h-5" />
+                                    ) : (
+                                        <Eye className="w-5 h-5" />
+                                    )}
+                                </button>
+                            </div>
+
+                            {errors.password && (
+                                <p className={signupStyles.fieldError}>
+                                    {errors.password}
+                                </p>
+                            )}
+                        </div>
+
+                        <div className={signupStyles.checkboxContainer}>
+                            <input
+                                type="checkbox"
+                                id="remember"
+                                checked={rememberMe}
+                                onChange={(e) =>
+                                    setRememberMe(e.target.checked)
+                                }
+                                className={signupStyles.checkbox}
+                            />
+                            <label htmlFor="remember" className={signupStyles.checkboxLabel}>
+                                Remember Me
+                            </label>
+                        </div>
+                        <button
+                            type="submit"
+                            disabled={isLoading}
+                            className={`${signupStyles.button} ${isLoading ? signupStyles.buttonDisabled : ""
+                                }`}
+                        >
+                            {isLoading ? (
+                                <>
+                                    <svg className={signupStyles.spinner} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    Creating account...
+                                </>
+                            ) : (
+                                "Create Account"
+                            )}
+                        </button>
+                    </form>
+<div className={signupStyles.signInContainer}>
+    <p className={signupStyles.signIntText}>
+        Already have an account?{" "}
+        <Link to="/login" className={signupStyles.signInLink}>
+          Sign in
+        </Link>
+    </p>
+</div>
+
+                </div>
+            </div>
         </div>
     );
 };
