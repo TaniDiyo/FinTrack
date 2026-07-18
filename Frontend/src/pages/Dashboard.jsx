@@ -2,9 +2,19 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { dashboardStyles, trendStyles, chartStyles } from '../assets/dummyStyles';
 import { GAUGE_COLORS, COLORS, INCOME_CATEGORY_ICONS, EXPENSE_CATEGORY_ICONS } from '../assets/color';
 import { useOutletContext } from 'react-router-dom';
+import GaugeCard from "../components/GaugeCard";
 import { getTimeFrameRange, getPreviousTimeFrameRange, calculateData } from '../components/Helpers';
 import axios from 'axios';
-import { Plus, Wallet } from "lucide-react";
+import {
+    Plus,
+    Wallet,
+    ArrowUp,
+    ArrowDown,
+    TrendingUp,
+    TrendingDown,
+    PiggyBank,
+    BarChart2,
+} from "lucide-react";
 import FinancialCard from "../components/FinancialCard";
 
 
@@ -43,8 +53,8 @@ const Dashboard = () => {
         transactions: outletTransactions = [],
         timeFrame = "monthly",
         setTimeFrame = () => { },
-        refreshTransactions = async () => { }
-    } = useOutletContext;
+        refreshTransactions
+    } = useOutletContext();
 
     const [showModal, setShowModal] = useState(false);
     const [gaugeData, setGaugeData] = useState([]);
@@ -64,6 +74,7 @@ const Dashboard = () => {
     const timeFrameRange = useMemo(() => getTimeFrameRange(timeFrame), [timeFrame]);
     const prevTimeFrameRange = useMemo(() => getPreviousTimeFrameRange(timeFrame), [timeFrame]);
 
+    //function to cehck if date is within the range
     const isDateInRange = (date, start, end) => {
         const transactionDate = new Date(date);
         const startDate = new Date(start);
@@ -75,6 +86,7 @@ const Dashboard = () => {
         return transactionDate >= startDate && transactionDate <= endDate;
     };
 
+    //to filter using date and time
     const filteredTransactions = useMemo(
         () => (outletTransactions || []).filter((t) =>
             isDateInRange(t.date, timeFrameRange.start, timeFrameRange.end)
@@ -89,6 +101,7 @@ const Dashboard = () => {
         [outletTransactions, prevTimeFrameRange]
     );
 
+    //calculate data
     const currentTimeFrameData = useMemo(() => {
         const data = calculateData(filteredTransactions);
         data.savings = data.income - data.expenses;
@@ -100,6 +113,8 @@ const Dashboard = () => {
         data.savings = data.income - data.expenses;
         return data;
     }, [prevFilteredTransactions]);
+
+    //update the quage when time frame changes
     useEffect(() => {
         const maxValues = {
             income: Math.max(currentTimeFrameData.income, 5000),
@@ -112,7 +127,7 @@ const Dashboard = () => {
             { name: "Spent", value: currentTimeFrameData.expenses, max: maxValues.expenses },
             { name: "Savings", value: currentTimeFrameData.savings, max: maxValues.savings },
         ]);
-    }, [currentTimeFrameData, timeFrame]); //the graph will be fill according to this data
+    }, [currentTimeFrameData, timeFrame]); // the graph will be fill according to this data
 
     const displayIncome =
         timeFrame === "monthly" && typeof overviewMeta.monthlyIncome === "number"
@@ -140,7 +155,6 @@ const Dashboard = () => {
         return Math.round(((curr - prev) / prev) * 100);
     }, [prevTimeFrameData, displayExpenses]);
 
-
     //expense distribution
     const financialOverviewData = useMemo(() => {
         if (
@@ -159,14 +173,16 @@ const Dashboard = () => {
         filteredTransactions.forEach((transaction) => {
             if (transaction.type === "expense") {
                 categories[transaction.category] =
-                    (categories[transaction.category] || 0) + Number(transaction.amount);
+                    (categories[transaction.category] || 0) + transaction.amount;
             }
         });
+
         return Object.keys(categories).map((category) => ({
             name: category,
             value: Math.round(categories[category]),
         }));
     }, [filteredTransactions, overviewMeta, timeFrame]);
+
 
     //build server-provided recent list
 
@@ -337,64 +353,9 @@ const Dashboard = () => {
             setLoading(false);
         }
     };
-    return (
-        <div className={dashboardStyles.container}>
-            {/*Header*/}
-            <div className={dashboardStyles.headerContainer}>
-                <div>
-                    <div className={dashboardStyles.headerContainer}>
-                        <h1 className={dashboardStyles.headerTitle}>Finance Dashboard</h1>
-                        <p className={dashboardStyles.headerSubtitle}>
-                            Track your income and expenses
-                        </p>
-                    </div>
-                    <button
-                        onClick={() => setShowModal(true)}
-                        className={dashboardStyles.addButton}>
-                        <Plus size={20} />
-                        Add Transaction
-                    </button>
-                </div>
-                <div className={dashboardStyles.timeFrameContainer}>
-                    <div className={dashboardStyles.timeFrameWrapper}>
-                        {["daily", "weekly", "monthly"].map((frame) => (
-                            <button
-                                key={frame}
-                                onClick={() => setTimeFrame(frame)}
-                                className={dashboardStyles.timeFrameButton(
-                                    timeFrame === frame
-                                )}
-                            >
-                                {frame.charAt(0).toUpperCase() + frame.slice(1)}
-                            </button>
-                        ))}
-                    </div>
-                </div>
-            </div>
-            <div className={dashboardStyles.summaryGrid}>
-                <FinancialCard
-                    icon={
-                        <div className={dashboardStyles.walletIconContainer}>
-                            <Wallet className="w-5 h-5 text-teal-600" />
-                        </div>
-                    }
-                    label="Total Balance"
-                    value={`₹${Math.round(displayIncome - displayExpenses).toLocaleString()}`}
-                    additionalContent={
-                        <div className="flex items-center gap-2 mt-2 text-green-600">
-                            <span className={dashboardStyles.balanceBadge}>
-                                +₹{Math.round(displayIncome).toLocaleString()}
-                            </span>
-                            <span className={dashboardStyles.expenseBadge}>
-                                -₹{Math.round(displayExpenses).toLocaleString()}
-                            </span>
-                        </div>
-                    }
-                />
-            </div>
-        </div>
-    );
+
 };
 
 export default Dashboard;
+
 

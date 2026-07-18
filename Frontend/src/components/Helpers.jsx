@@ -30,7 +30,7 @@ export const getTimeFrameRange = (timeFrame) => {
   // default -> monthly
   const startOfMonth = new Date(start.getFullYear(), start.getMonth(), 1);
   return { start: startOfMonth, end: new Date(now), label: "This Month" };
-};
+};//to filter according to day, month, year
 
 export const getPreviousTimeFrameRange = (timeFrame) => {
   const now = new Date();
@@ -204,3 +204,4 @@ export const generateChartPoints = (timeFrame) => {
 
   return points;
 };
+//helper function to help in filtering
