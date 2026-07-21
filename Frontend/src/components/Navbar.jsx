@@ -21,7 +21,9 @@ const Navbar = ({ user: propUser, onLogout }) => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const token = localStorage.getItem("token");
+                const token =
+                    localStorage.getItem("token") ||
+                    sessionStorage.getItem("token");
                 if (!token) return;
 
                 const response = await axios.get(`${BASE_URL}/user/me`, {
@@ -49,16 +51,16 @@ const Navbar = ({ user: propUser, onLogout }) => {
     };
 
     //closes the toggle menu if click outside the box
-     useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
-        setMenuOpen(false);
-      }
-    };
-    
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (menuRef.current && !menuRef.current.contains(e.target)) {
+                setMenuOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
 
     return (
         <header className={navbarStyles.header}>

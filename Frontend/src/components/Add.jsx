@@ -1,5 +1,6 @@
 import React from 'react'
 import { modalStyles } from '../assets/dummyStyles';
+import { X } from "lucide-react";
 
 const AddTransactionModal = ({
     showModal,
@@ -57,11 +58,9 @@ const AddTransactionModal = ({
                                     }))
                                 }
                                 className={modalStyles.input(colorClass.ring)}
-                                placeholder={
-                                    type === "both"
-                                        ? "Salary, Funds, etc."
-                                        : "Groceries, Rent, etc."
-                                }
+                                placeholder="Salary, Rent, Grocery"
+                                pattern="[A-Za-z ]+"
+                                title="Description can contain only letters and spaces."
                                 required
                             />
                         </div>
@@ -116,29 +115,36 @@ const AddTransactionModal = ({
                         <div>
                             <label className={modalStyles.label}>Category</label>
                             <select value={newTransaction.category}
-                            onChange={(e)=>
-                                setNewTransaction((prev)=>({
-                                    ...prev,
-                                    category: e.target.value
-                                }))
-                            }className={modalStyles.input(colorClass.ring)}>
+                                onChange={(e) =>
+                                    setNewTransaction((prev) => ({
+                                        ...prev,
+                                        category: e.target.value
+                                    }))
+                                } className={modalStyles.input(colorClass.ring)}>
                                 {categories.map((cat) => (
-                                    <option value={cat} key={cat}></option>
+                                    <option value={cat} key={cat}>
+                                        {cat}
+                                    </option>
                                 ))}
                             </select>
                         </div>
 
                         <div>
                             <label className={modalStyles.label}>Date</label>
-                            <input type="date" value={newTransaction.date} onChange={(e) =>
-                                newTransaction((prev) => ({
-                                    ...prev,
-                                    date: e.target.value,
-                                }))
-                            }className={modalStyles.input(colorClass.ring)}
-                            min={minDate}
-                            max={currentDate}
-                            required />
+                            <input
+                                type="date"
+                                value={newTransaction.date}
+                                onChange={(e) =>
+                                    setNewTransaction((prev) => ({
+                                        ...prev,
+                                        date: e.target.value,
+                                    }))
+                                }
+                                className={modalStyles.input(colorClass.ring)}
+                                min={minDate}
+                                max={currentDate}
+                                required
+                            />
                         </div>
                         <button type="submit" className={modalStyles.submitButton(colorClass.button)}>
                             {buttonText}

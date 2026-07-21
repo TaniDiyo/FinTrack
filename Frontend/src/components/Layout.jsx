@@ -66,11 +66,21 @@ const filterTransactions = (transactions, frame) => {
 
 const safeArrayFromResponse = (res) => {
   const body = res?.data;
+
   if (!body) return [];
+
   if (Array.isArray(body)) return body;
+
   if (Array.isArray(body.data)) return body.data;
+
+  if (Array.isArray(body.income)) return body.income;
+
+  if (Array.isArray(body.expense)) return body.expense;
+
   if (Array.isArray(body.incomes)) return body.incomes;
+
   if (Array.isArray(body.expenses)) return body.expenses;
+
   return [];
 };
 
@@ -88,7 +98,9 @@ const Layout = ({ onLogout, user }) => {
   const fetchTransactions = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem("token");
+      const token =
+        localStorage.getItem("token") ||
+        sessionStorage.getItem("token");
       const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
       const [incomeRes, expenseRes] = await Promise.all([
@@ -133,7 +145,9 @@ const Layout = ({ onLogout, user }) => {
 
   const addTransaction = async (transaction) => {
     try {
-      const token = localStorage.getItem("token");
+      const token =
+        localStorage.getItem("token") ||
+        sessionStorage.getItem("token");
       const headers = token ? { Authorization: `Bearer ${token}` } : {};
       const endpoint =
         transaction.type === "income" ? "income/add" : "expense/add";
@@ -153,7 +167,9 @@ const Layout = ({ onLogout, user }) => {
 
   const editTransaction = async (id, transaction) => {
     try {
-      const token = localStorage.getItem("token");
+      const token =
+        localStorage.getItem("token") ||
+        sessionStorage.getItem("token");
       const headers = token ? { Authorization: `Bearer ${token}` } : {};
       const endpoint =
         transaction.type === "income" ? "income/update" : "expense/update";
@@ -175,7 +191,9 @@ const Layout = ({ onLogout, user }) => {
 
   const deleteTransaction = async (id, type) => {
     try {
-      const token = localStorage.getItem("token");
+      const token =
+        localStorage.getItem("token") ||
+        sessionStorage.getItem("token");
       const headers = token ? { Authorization: `Bearer ${token}` } : {};
       const endpoint = type === "income" ? "income/delete" : "expense/delete";
       await axios.delete(`${API_BASE}/${endpoint}/${id}`, { headers });
@@ -499,6 +517,7 @@ const Layout = ({ onLogout, user }) => {
                   </span>
                 </h3>
               </div>
+              <Outlet context={outletContext} />
             </div>
           </div>
 
@@ -547,8 +566,8 @@ const Layout = ({ onLogout, user }) => {
                             {description}
                           </p>
 
-                          <p className={styles.transactionc.meta}>
-                            {new date(date).toLocaleDateString()}
+                          <p className={styles.transactions.meta}>
+                            {new Date(date).toLocaleDateString()}
                             <span className="ml-2 capitalize">
                               {category}
                             </span>
@@ -556,9 +575,8 @@ const Layout = ({ onLogout, user }) => {
                         </div>
                       </div>
 
-                      <span className={styles.colors.transaction.text(type)}>{
-                        type === "income" ? "+" : "-"}${Number(amount)}
-
+                      <span className={styles.colors.transaction.text(type)}>
+                        {type === "income" ? "+" : "-"}₹{Number(amount).toLocaleString("en-IN")}
                       </span>
 
                     </div>
@@ -622,7 +640,7 @@ const Layout = ({ onLogout, user }) => {
                         className={styles.categories.categoryIconContainer}
                       >
                         {CATEGORY_ICONS[category] || (
-                          <DollarSign
+                          <IndianRupee
                             className={styles.categories.categoryIcon}
                           />
                         )}
@@ -667,14 +685,9 @@ const Layout = ({ onLogout, user }) => {
                   </div>
                 </div>
               </div>
-
             </div>
-
           </div>
-
         </div>
-
-        <Outlet />
       </div>
     </div>
   );

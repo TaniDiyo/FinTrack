@@ -5,6 +5,8 @@ import Signup from "./components/Signup";
 import React, { useState, useEffect } from "react";
 import { useNavigate, Route, Routes, Navigate, useLocation } from "react-router-dom";
 import axios from "axios";
+import { INCOME_CATEGORY_ICONS } from "./assets/color";
+import Income from "./pages/Income";
 
 const API_URL = "http://localhost:5000";
 
@@ -239,8 +241,19 @@ const App = () => {
               />
             }
           />
+          <Route
+          path="/income"
+          element={
+            <Income
+              transactions={transactions}
+              addTransaction={addTransaction}
+              editTransaction={editTransaction}
+              deleteTransaction={deleteTransaction}
+              refreshTransactions={refreshTransactions}
+            />
+          }
+        />
         </Route>
-
       </Routes>
     </>
   );
