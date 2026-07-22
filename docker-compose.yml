@@ -3,19 +3,19 @@ version: "3.9"
 services:
 
   backend:
-    build: ./backend
+    build: ./Backend
     container_name: fintrack_backend
 
     ports:
       - "5000:5000"
 
     env_file:
-      - ./backend/.env
+      - ./Backend/.env
 
     restart: always
 
   frontend:
-    build: ./frontend
+    build: ./Frontend
 
     container_name: fintrack_frontend
 
