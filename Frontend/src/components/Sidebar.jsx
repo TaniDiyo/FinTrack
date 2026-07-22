@@ -302,7 +302,7 @@ const Sidebar = ({ user, isCollapsed, setIsCollapsed }) => {
                                     .expanded
                         )}
                     >
-                        <Link
+                        {/* <Link
                             className={cn(
                                 sidebarStyles
                                     .footerLink.base,
@@ -323,7 +323,7 @@ const Sidebar = ({ user, isCollapsed, setIsCollapsed }) => {
                                     Support
                                 </span>
                             )}
-                        </Link>
+                        </Link> */}
 
                         <button
                             onClick={
