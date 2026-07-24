@@ -10,7 +10,7 @@ import {
 import { loginStyles } from "../assets/dummyStyles";
 import axios from "axios";
 
-const Login = ({ onLogin, API_URL = "http://localhost:5000" }) => {
+const Login = ({ onLogin, API_URL = "http://13.49.68.200:5000" }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);

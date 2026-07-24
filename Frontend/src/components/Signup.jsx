@@ -5,7 +5,7 @@ import axios from "axios";
 import { signupStyles } from "../assets/dummyStyles";
 
 const Signup = ({
-    API_URL = "http://localhost:5000",
+    API_URL = "http://13.49.68.200:5000",
     onSignup,
 }) => {
     const [name, setName] = useState("");

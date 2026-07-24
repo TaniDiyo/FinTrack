@@ -31,7 +31,7 @@ import { getTimeFrameRange, generateChartPoints } from "../components/Helpers";
 import { INCOME_COLORS, CATEGORY_ICONS_Inc } from "../assets/color";
 import { incomeStyles as styles } from "../assets/dummyStyles";
 
-const API_BASE = "http://localhost:5000/api";
+const API_BASE = "http://13.49.68.200:5000/api";
 
 //helps in converting date to ISO
 

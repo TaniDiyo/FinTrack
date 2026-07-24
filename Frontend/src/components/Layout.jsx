@@ -26,7 +26,7 @@ import {
   PieChart,
 } from "lucide-react";
 
-const API_BASE = "http://localhost:5000/api"
+const API_BASE = "http://13.49.68.200:5000/api"
 
 const CATEGORY_ICONS = {
   Food: <Utensils className="w-4 h-4" />,
