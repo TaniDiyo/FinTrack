@@ -33,7 +33,7 @@ import {
 } from "recharts";
 
 
-const API_BASE = "http://localhost:5000/api";
+const API_BASE = "http://13.61.173.220:5000/api";
 
 const getAuthHeader = () => {
     const token =

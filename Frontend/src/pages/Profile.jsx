@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 
 import { profileStyles } from "../assets/dummyStyles";
-const BASE_URL = "http://localhost:5000/api";
+const BASE_URL = "http://13.61.173.220:5000/api";
 
 Modal.setAppElement('#root');
 // Move PasswordInput component outside of ProfilePage to prevent recreation on every render
