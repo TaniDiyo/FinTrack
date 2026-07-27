@@ -1,28 +1,16 @@
-version: "3.9"
+version: "3"
 
 services:
-
   backend:
     build: ./Backend
-    container_name: fintrack_backend
-
     ports:
       - "5000:5000"
-
     env_file:
       - ./Backend/.env
 
-    restart: always
-
   frontend:
     build: ./Frontend
-
-    container_name: fintrack_frontend
-
     ports:
-      - "80:80"
-
+      - "3000:5173"
     depends_on:
       - backend
-
-    restart: always
