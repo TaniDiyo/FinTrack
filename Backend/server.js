@@ -27,13 +27,25 @@ app.use("/api/expense", expenseRouter);
 app.use("/api/income",incomeRouter);
 app.use("/api/dashboard",dashboardRouter);
 
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use(express.static(path.join(__dirname, "../Frontend/dist")));
+
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../Frontend/dist/index.html"));
+}); 
 
 app.get('/',(req,res)=>{
     res.send("API WORKING");
 })
 
-app.listen(port, ()=>{
-    console.log(`Server started on http://localhost:${port}`);
-})
+app.listen(port, "0.0.0.0", () => {
+    console.log(`Server started on port ${port}`);
+});
+
 
 

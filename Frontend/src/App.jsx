@@ -10,7 +10,7 @@ import Income from "./pages/Income";
 import Expense from "./pages/Expense";
 import Profile from "./pages/Profile";
 
-const API_URL = "http://13.61.173.220:5000";
+const API_URL = "";
 
 //to get transection from localstorage
 const getTransactionsFromStorage = () => {

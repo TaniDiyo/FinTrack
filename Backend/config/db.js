@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 export const connectDB = async () => {
   try {
     await mongoose.connect(
-      "mongodb+srv://tanishadiyora:Tani123@cluster0.cokjm9h.mongodb.net/Expense?retryWrites=true&w=majority&appName=Cluster0"
+      "mongodb+srv://tanimongodb123_db_user:3ccPVmlPjVyaZJhH@clusteres.ui2il6u.mongodb.net"
     );
 
     console.log("DB CONNECTED");
